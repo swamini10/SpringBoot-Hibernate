@@ -42,7 +42,15 @@ public class UserController {
 		return us.withdraw(accno, aadhaar, amount);
 	}
 	
-	
+	@PutMapping("/transfer")
+	public AccountDetailsDTO transfer(@RequestParam("accnofrom") int accnofrom, 
+									  @RequestParam("aadhaarfrom") int aadhaarfrom, 
+									  @RequestParam("amount") int amount,
+									  @RequestParam("accno") int accno, 
+									  @RequestParam("aadhaar") int aadhaar) {
+		
+		return us.transfer(accnofrom,aadhaarfrom,amount,accno, aadhaar);
+	}
 	
 	
 	

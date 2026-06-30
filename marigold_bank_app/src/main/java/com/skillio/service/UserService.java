@@ -141,4 +141,45 @@ public class UserService {
 		}
 	}
 
+	public AccountDetailsDTO transfer(int accnofrom, int aadhaarfrom, int amount, int accno, int aadhaar) {
+		// TODO Auto-generated method stub
+		
+		Optional<User> user = ur.findByAccNo(accnofrom);
+		Optional<User> user2 = ur.findByAccNo(accnofrom);
+		if(user.isPresent() && user2.isPresent()) {
+			
+			User myData = user.get();
+			User myData1 = user2.get();
+			String myName = myData.getFirstname() + " " + myData.getLastname();
+			if(myData.getAadhar() == aadhaarfrom && myData1.getAadhar() == aadhaar) {
+				
+				int myBalance = myData.getBalance() - amount;
+				myData.setBalance(myBalance);
+				
+				ur.save(myData);
+			
+				System.out.println(myData);
+				AccountDetailsDTO add = new AccountDetailsDTO();
+				
+				add.setAccNo(accnofrom);
+				add.setName(myName);
+				add.setBalance(myBalance);
+				
+				ur.save(myData1);
+				add.setAccNo(accno);
+				add.setName(myName);
+				add.setBalance(myBalance);
+				
+				return add;
+				
+			} else {
+				throw new RuntimeException("Account Number Or Aadhaar Number is not valid");
+			}
+		}else {
+			throw new RuntimeException("User not found");
+		}
+	}
+
+	
+
 }
