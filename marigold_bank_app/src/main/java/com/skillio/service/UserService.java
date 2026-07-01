@@ -117,7 +117,10 @@ public class UserService {
 			User myData = user.get();
 			String myName = myData.getFirstname() + " " + myData.getLastname();
 			if(myData.getAadhar() == aadhaar) {
-				
+				if(amount <= 0 || amount > myData.getBalance()) {		
+					throw new RuntimeException("Please enter valid amount");
+				}
+
 				int myBalance = myData.getBalance() - amount;
 				myData.setBalance(myBalance);
 
@@ -154,9 +157,13 @@ public class UserService {
 			String myName1 = myData1.getFirstname() + " " + myData.getLastname();
 			if(myData.getAadhar() == aadhaarfrom && myData1.getAadhar() == aadhaar) {
 				
+				if(amount <= 0 || amount > myData.getBalance()) {
+					throw new RuntimeException("Please enter valid amount");
+				}
+				
 				int myBalance = myData.getBalance() - amount;
 				myData.setBalance(myBalance);
-				
+				ur.save(myData1);
 				ur.save(myData);
 			
 				System.out.println(myData);
@@ -169,10 +176,6 @@ public class UserService {
 				int updatedBalance = myData1.getBalance() + amount;
 				myData1.setBalance(updatedBalance);
 				
-				ur.save(myData1);
-				add.setAccNo(accno);
-				add.setName(myName1);
-				add.setBalance(updatedBalance);
 				
 				return add;
 				
